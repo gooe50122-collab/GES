@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>達標計算器</title>
+  <style>
+    body {
+      font-family: 'Microsoft JhengHei', sans-serif;
+      background: #fdf9f4;
+      margin: 0;
+      padding: 40px 0;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      background: #fff;
+      width: 560px;
+      border: 1px solid #cbbca9;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 36px;
+    }
+    h2 {
+      background-color: #f2e8dc;
+      border: 2px solid #cbbca9;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
+    p {
+      text-align: center;
+      color: #6b5c4c;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #d2bfa3;
+      padding: 10px;
+      text-align: center;
+      font-size: 16px;
+    }
+    th {
+      background: #f7f2eb;
+      color: #5c4a3b;
+      font-weight: bold;
+    }
+    td input {
+      width: 75px;
+      padding: 6px;
+      font-size: 15px;
+      text-align: center;
+      border: 1px solid #d6c6b5;
+      border-radius: 4px;
+      background: #fcf8f2;
+    }
+    button {
+      margin-top: 28px;
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #b9a48d;
+      background: linear-gradient(to bottom, #f9e7d2, #e4c9ac);
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: bold;
+      color: #4e3f33;
+      cursor: pointer;
+    }
+    button:hover {
+      background: linear-gradient(to bottom, #f2d8bb, #dcbca0);
+    }
+    .result {
+      margin-top: 26px;
+    }
+    .result table {
+      background: #fffefc;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .result th, .result td {
+      border: 1px solid #d2bfa3;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .result th {
+      background-color: #f7f2eb;
+      color: #5c4a3b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🎯達標計算器</h2>
+    <table id="inputTable">
+      <tr>
+        <th></th>
+        <th>總回應數 </th>
+        <th>OSAT  (%)</th>
+        <th>SOS  (%)</th>
+      </tr>
+      <tr><td>STORE</td><td><input value=""></td><td><input value=""></td><td><input value=""></td></tr>
+    </table>
+    <button onclick="calculate()">開始計算</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculate() {
+      const rows = document.querySelectorAll('#inputTable tr');
+      let html = '<table><tr><th></th><th>OSAT 缺</th><th> SOS 缺</th></tr>';
+      for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].querySelectorAll('td');
+        const area = cells[0].textContent;
+        const B = parseInt(cells[1].querySelector('input').value);
+        const D = parseFloat(cells[2].querySelector('input').value);
+        const F = parseFloat(cells[3].querySelector('input').value);
+
+        const C = Math.round(B * D / 100);
+        const E = Math.round(B * F / 100);
+
+        const xOSAT = Math.max(0, Math.ceil((0.79 * B - C) / 0.22));
+        const xSOS = Math.max(0, Math.ceil((0.79 * B - E) / 0.22));
+
+        html += `<tr><td>${area}</td><td>${xOSAT} 份</td><td>${xSOS} 份</td></tr>`;
+      }
+      html += '</table>';
+      document.getElementById('result').innerHTML = html;
+    }
+  </script>
+</body>
+</html>
+
+
+
